@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Netflix Mini</title>
+    <style>
+      body { font-family: sans-serif; padding: 20px; }
+      .movie { margin-bottom: 10px; }
+    </style>
+  </head>
+  <body>
+    <h1>🎬 Movie List</h1>
+    <button onclick="loadMovies()">Load Movies</button>
+    <div id="movie-list">No movies loaded yet.</div>
+
+
+    <script>
+  function loadMovies() {
+    const list = document.getElementById('movie-list');
+    list.innerHTML = 'Loading...';
+
+    fetch('/api/movies')
+      .then(res => res.json())
+      .then(data => {
+        list.innerHTML = '';
+        data.forEach(movie => {
+          const div = document.createElement('div');
+          div.className = 'movie';
+          div.textContent = `${movie.title} — ${movie.genre}`;
+          list.appendChild(div);
+        });
+      })
+      .catch(() => {
+        list.innerHTML = '❌ Failed to load movies.';
+      });
+  }
+</script>
